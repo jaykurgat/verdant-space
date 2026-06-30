@@ -1,5 +1,7 @@
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Mail, MapPin } from 'lucide-react'
+import { getSiteContent } from '../lib/dataStore'
 
 const focusAreas = [
   'Forestry and Forest Conservation',
@@ -11,6 +13,12 @@ const focusAreas = [
 ]
 
 export default function Footer() {
+  const [content, setContent] = useState(null)
+
+  useEffect(() => {
+    getSiteContent().then(setContent)
+  }, [])
+
   return (
     <footer className="bg-forest text-warm-white">
       <div className="max-w-6xl mx-auto px-6 py-16">
@@ -23,19 +31,19 @@ export default function Footer() {
               <span className="font-serif text-xl text-warm-white">VerdantSpace</span>
             </Link>
             <p className="font-sans text-sm text-warm-white/60 leading-relaxed max-w-xs">
-              Africa's trusted digital platform for environmental knowledge — connecting science, communities and decision-makers to build a more sustainable future.
+              {content?.footerTagline}
             </p>
             <p className="font-accent text-sage text-base italic">
-              "Connecting People, Nature and Knowledge"
+              "{content?.footerQuote}"
             </p>
             <div className="space-y-2 pt-2">
               <div className="flex items-center gap-2 text-warm-white/50 text-xs font-sans">
                 <Mail size={12} />
-                hello@verdantspace.org
+                {content?.contactEmail}
               </div>
               <div className="flex items-center gap-2 text-warm-white/50 text-xs font-sans">
                 <MapPin size={12} />
-                Africa
+                {content?.contactLocation?.split('·')[0]?.trim()}
               </div>
             </div>
           </div>
@@ -45,16 +53,13 @@ export default function Footer() {
             <h4 className="font-serif text-lg text-sage">Explore</h4>
             <ul className="space-y-2">
               {[
-                { to: '/',       label: 'Home'             },
-                { to: '/blog',   label: 'Blog'             },
-                { to: '/gallery',label: 'Pictorial Gallery'},
-                { to: '/about',  label: 'About & Contact'  },
+                { to: '/',        label: 'Home'             },
+                { to: '/blog',    label: 'Blog'             },
+                { to: '/gallery', label: 'Pictorial Gallery'},
+                { to: '/about',   label: 'About & Contact'  },
               ].map((link) => (
                 <li key={link.to}>
-                  <Link
-                    to={link.to}
-                    className="font-sans text-sm text-warm-white/70 hover:text-sage transition-colors"
-                  >
+                  <Link to={link.to} className="font-sans text-sm text-warm-white/70 hover:text-sage transition-colors">
                     {link.label}
                   </Link>
                 </li>

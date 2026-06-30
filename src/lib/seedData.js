@@ -1,7 +1,71 @@
+// Hero now supports multiple carousel slides.
+// Each slide: { id, title, tagline, imageUrl }
 export const seedHero = {
-  title: 'Connecting People,\nNature & Knowledge',
-  tagline: 'Africa\'s trusted digital platform for environmental knowledge — transforming science, field experience, and community insight into content that inspires informed action.',
-  imageUrl: 'https://images.unsplash.com/photo-1448375240586-882707db888b?w=1920&q=80',
+  slides: [
+    {
+      id: 'slide-1',
+      title: 'Connecting People,\nNature & Knowledge',
+      tagline: 'Africa\'s trusted digital platform for environmental knowledge — transforming science, field experience, and community insight into content that inspires informed action.',
+      imageUrl: 'https://images.unsplash.com/photo-1448375240586-882707db888b?w=1920&q=80',
+    },
+    {
+      id: 'slide-2',
+      title: 'Knowledge Has the Power\nto Transform Nature',
+      tagline: 'Bridging the gap between science, policy, and communities — one story, one forest, one ecosystem at a time.',
+      imageUrl: 'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=1920&q=80',
+    },
+    {
+      id: 'slide-3',
+      title: 'Protecting Forests,\nEmpowering Communities',
+      tagline: 'Built around three pillars — People, Nature, and Knowledge — for a more sustainable future.',
+      imageUrl: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1920&q=80',
+    },
+  ],
+  autoplay: true,
+  intervalSeconds: 6,
+}
+
+// Editable site-wide content: About page sections, Footer, Contact info.
+// All fully editable from /vs-admin → Site Content.
+export const seedSiteContent = {
+  aboutIntro: 'A trusted digital platform that transforms environmental knowledge into practical insights, connecting science, communities and decision-makers to build a more sustainable future.',
+
+  originStoryTitle: 'Why I Started Verdant Space',
+  originStory: `It was born from the simple belief that knowledge has the power to transform how people relate to nature.
+
+Working in the forestry field, I have experienced firsthand the immense value of forests and ecosystems — not only for biodiversity but also for livelihoods, water security, climate resilience and the well-being of communities.
+
+At the same time, I have observed that much of the valuable research, field experience, and environmental knowledge remains inaccessible to the people who need it most.
+
+I started Verdant Space to bridge that gap. Whether someone is a student beginning their environmental journey, a forester managing forests, a policy maker shaping sustainable solutions, or simply a citizen who cares about the planet — this space is for you. It aims to provide reliable, relevant and engaging content.`,
+  originStoryImageUrl: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&q=80',
+  originStoryQuote: 'Connecting people, Nature and Knowledge.',
+
+  visionTitle: "Africa's leading digital platform for environmental knowledge",
+  visionText: 'Inspiring informed action for healthy forests, resilient ecosystems, and sustainable communities.',
+
+  missionTitle: 'Connect people, nature, and knowledge',
+  missionText: 'Creating and sharing trusted environmental content that promotes forest conservation, biodiversity protection, climate resilience, ecological restoration, and sustainable natural resource management.',
+
+  purposeTitle: 'Make knowledge accessible, practical and impactful',
+  purposeText: 'We bridge the gap between science, policy, and communities — providing reliable information that empowers people to protect and restore our natural world.',
+
+  brandPromise: 'Committed to delivering credible, evidence-based environmental knowledge that informs decisions, inspires action, and supports sustainable development.',
+
+  objectives: [
+    'Promote environmental awareness and education.',
+    'Publish reliable and evidence-based environmental content.',
+    'Support forest conservation and restoration initiatives.',
+    'Advocate for biodiversity protection and climate resilience.',
+    'Encourage sustainable livelihoods and community participation.',
+  ],
+
+  contactIntro: 'Whether you are a student beginning your environmental journey, a forester managing forests, a policy maker shaping sustainable solutions, or simply a citizen who cares about the planet — Verdant Space is always listening.',
+  contactEmail: 'hello@verdantspace.org',
+  contactLocation: 'Africa · Writing from everywhere',
+
+  footerTagline: "Africa's trusted digital platform for environmental knowledge — connecting science, communities and decision-makers to build a more sustainable future.",
+  footerQuote: 'Connecting People, Nature and Knowledge',
 }
 
 export const seedCategories = [

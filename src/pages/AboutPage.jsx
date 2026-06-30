@@ -1,38 +1,16 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Mail, MapPin, Send, Check, Shield, Leaf, Users, Lightbulb, Sprout, BookOpen, Target } from 'lucide-react'
 import { useScrollFade } from '../hooks/useScrollFade'
+import { getSiteContent } from '../lib/dataStore'
+import LoadingSpinner from '../components/LoadingSpinner'
 
 const values = [
-  {
-    icon: Shield,
-    title: 'Integrity',
-    description: 'We uphold honesty, transparency and scientific accuracy in everything we publish.',
-  },
-  {
-    icon: Leaf,
-    title: 'Sustainability',
-    description: 'We promote responsible environmental stewardship for present and future generations.',
-  },
-  {
-    icon: BookOpen,
-    title: 'Knowledge',
-    description: 'We believe informed people make better decisions for the environment.',
-  },
-  {
-    icon: Users,
-    title: 'Collaboration',
-    description: 'We value partnerships and diverse perspectives to create meaningful impact.',
-  },
-  {
-    icon: Lightbulb,
-    title: 'Innovation',
-    description: 'We embrace new ideas and technologies to solve environmental challenges.',
-  },
-  {
-    icon: Sprout,
-    title: 'Stewardship',
-    description: 'We encourage the responsible management and restoration of forests and ecosystems.',
-  },
+  { icon: Shield,    title: 'Integrity',      description: 'We uphold honesty, transparency and scientific accuracy in everything we publish.' },
+  { icon: Leaf,       title: 'Sustainability', description: 'We promote responsible environmental stewardship for present and future generations.' },
+  { icon: BookOpen,   title: 'Knowledge',      description: 'We believe informed people make better decisions for the environment.' },
+  { icon: Users,      title: 'Collaboration',  description: 'We value partnerships and diverse perspectives to create meaningful impact.' },
+  { icon: Lightbulb,  title: 'Innovation',     description: 'We embrace new ideas and technologies to solve environmental challenges.' },
+  { icon: Sprout,     title: 'Stewardship',    description: 'We encourage the responsible management and restoration of forests and ecosystems.' },
 ]
 
 const focusAreas = [
@@ -47,15 +25,7 @@ const focusAreas = [
   'Environmental Education',
 ]
 
-const objectives = [
-  'Promote environmental awareness and education.',
-  'Publish reliable and evidence-based environmental content.',
-  'Support forest conservation and restoration initiatives.',
-  'Advocate for biodiversity protection and climate resilience.',
-  'Encourage sustainable livelihoods and community participation.',
-]
-
-function ContactForm() {
+function ContactForm({ content }) {
   const ref = useScrollFade()
   const [form, setForm] = useState({ name: '', email: '', message: '' })
   const [sent, setSent] = useState(false)
@@ -75,17 +45,15 @@ function ContactForm() {
         <div className="space-y-6">
           <span className="accent-line">Get in Touch</span>
           <h2 className="heading-lg">Start a Conversation</h2>
-          <p className="body-text">
-            Whether you are a student beginning your environmental journey, a forester managing forests, a policy maker shaping sustainable solutions, or simply a citizen who cares about the planet — Verdant Space is always listening.
-          </p>
+          <p className="body-text">{content.contactIntro}</p>
           <div className="space-y-4 pt-4">
             <div className="flex items-center gap-3 text-sm font-sans text-charcoal/70">
               <Mail size={16} className="text-verdant flex-shrink-0" />
-              hello@verdantspace.org
+              {content.contactEmail}
             </div>
             <div className="flex items-center gap-3 text-sm font-sans text-charcoal/70">
               <MapPin size={16} className="text-verdant flex-shrink-0" />
-              Africa · Writing from everywhere
+              {content.contactLocation}
             </div>
           </div>
         </div>
@@ -110,49 +78,18 @@ function ContactForm() {
           ) : (
             <form onSubmit={handleSubmit} className="space-y-5">
               <div>
-                <label className="block font-sans text-xs font-medium text-charcoal mb-2 uppercase tracking-wider">
-                  Your Name
-                </label>
-                <input
-                  type="text"
-                  value={form.name}
-                  onChange={(e) => setForm({ ...form, name: e.target.value })}
-                  placeholder="Your full name"
-                  required
-                  className="input-field"
-                />
+                <label className="block font-sans text-xs font-medium text-charcoal mb-2 uppercase tracking-wider">Your Name</label>
+                <input type="text" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="Your full name" required className="input-field" />
               </div>
               <div>
-                <label className="block font-sans text-xs font-medium text-charcoal mb-2 uppercase tracking-wider">
-                  Email Address
-                </label>
-                <input
-                  type="email"
-                  value={form.email}
-                  onChange={(e) => setForm({ ...form, email: e.target.value })}
-                  placeholder="your@email.com"
-                  required
-                  className="input-field"
-                />
+                <label className="block font-sans text-xs font-medium text-charcoal mb-2 uppercase tracking-wider">Email Address</label>
+                <input type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} placeholder="your@email.com" required className="input-field" />
               </div>
               <div>
-                <label className="block font-sans text-xs font-medium text-charcoal mb-2 uppercase tracking-wider">
-                  Message
-                </label>
-                <textarea
-                  value={form.message}
-                  onChange={(e) => setForm({ ...form, message: e.target.value })}
-                  placeholder="What's on your mind?"
-                  required
-                  rows={5}
-                  className="textarea-field"
-                />
+                <label className="block font-sans text-xs font-medium text-charcoal mb-2 uppercase tracking-wider">Message</label>
+                <textarea value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} placeholder="What's on your mind?" required rows={5} className="textarea-field" />
               </div>
-              <button
-                type="submit"
-                disabled={sending}
-                className="btn-primary w-full justify-center"
-              >
+              <button type="submit" disabled={sending} className="btn-primary w-full justify-center">
                 {sending ? 'Sending…' : (<>Send Message <Send size={14} /></>)}
               </button>
             </form>
@@ -164,12 +101,21 @@ function ContactForm() {
 }
 
 export default function AboutPage() {
-  const heroRef    = useScrollFade()
-  const storyRef     = useScrollFade()
-  const missionRef   = useScrollFade()
-  const objectivesRef = useScrollFade()
-  const focusRef     = useScrollFade()
-  const valuesRef    = useScrollFade()
+  const heroRef       = useScrollFade()
+  const storyRef       = useScrollFade()
+  const missionRef     = useScrollFade()
+  const objectivesRef  = useScrollFade()
+  const focusRef       = useScrollFade()
+  const valuesRef      = useScrollFade()
+
+  const [content, setContent] = useState(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    getSiteContent().then((c) => { setContent(c); setLoading(false) })
+  }, [])
+
+  if (loading || !content) return <LoadingSpinner />
 
   return (
     <div className="min-h-screen pt-24">
@@ -178,10 +124,7 @@ export default function AboutPage() {
       <div ref={heroRef} className="max-w-6xl mx-auto px-6 py-16">
         <span className="accent-line">Our Story</span>
         <h1 className="heading-xl mt-3 mb-4">About Verdant Space</h1>
-        <p className="body-text max-w-2xl text-lg leading-8">
-          A trusted digital platform that transforms environmental knowledge into practical insights,
-          connecting science, communities and decision-makers to build a more sustainable future.
-        </p>
+        <p className="body-text max-w-2xl text-lg leading-8">{content.aboutIntro}</p>
         <div className="w-20 h-1 bg-sage mt-8" />
       </div>
 
@@ -189,34 +132,17 @@ export default function AboutPage() {
       <section ref={storyRef} className="py-16 px-6 bg-sage/10">
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <div className="space-y-5">
-            <h2 className="heading-lg">Why I Started Verdant Space</h2>
+            <h2 className="heading-lg">{content.originStoryTitle}</h2>
             <div className="space-y-4 body-text leading-8">
-              <p>
-                It was born from the simple belief that knowledge has the power to transform how people relate to nature.
-              </p>
-              <p>
-                Working in the forestry field, I have experienced firsthand the immense value of forests and ecosystems — not only for biodiversity but also for livelihoods, water security, climate resilience and the well-being of communities.
-              </p>
-              <p>
-                At the same time, I have observed that much of the valuable research, field experience, and environmental knowledge remains inaccessible to the people who need it most.
-              </p>
-              <p>
-                I started Verdant Space to bridge that gap. Whether someone is a student beginning their environmental journey, a forester managing forests, a policy maker shaping sustainable solutions, or simply a citizen who cares about the planet — this space is for you. It aims to provide reliable, relevant and engaging content.
-              </p>
+              {content.originStory.split('\n\n').map((para, i) => <p key={i}>{para}</p>)}
             </div>
           </div>
           <div className="relative">
             <div className="aspect-square overflow-hidden rounded-sm">
-              <img
-                src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&q=80"
-                alt="Forest"
-                className="w-full h-full object-cover"
-              />
+              <img src={content.originStoryImageUrl} alt="Forest" className="w-full h-full object-cover" />
             </div>
             <div className="absolute -bottom-4 -left-4 bg-forest p-6 rounded-sm max-w-[220px] hidden md:block">
-              <p className="font-accent text-sage text-sm italic leading-relaxed">
-                "Connecting people, Nature and Knowledge."
-              </p>
+              <p className="font-accent text-sage text-sm italic leading-relaxed">"{content.originStoryQuote}"</p>
             </div>
           </div>
         </div>
@@ -227,30 +153,18 @@ export default function AboutPage() {
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
           <div className="space-y-4">
             <p className="font-accent text-sage text-base">Our Vision</p>
-            <h3 className="font-serif text-2xl text-warm-white leading-snug">
-              Africa's leading digital platform for environmental knowledge
-            </h3>
-            <p className="font-sans text-sm text-warm-white/60 leading-7">
-              Inspiring informed action for healthy forests, resilient ecosystems, and sustainable communities.
-            </p>
+            <h3 className="font-serif text-2xl text-warm-white leading-snug">{content.visionTitle}</h3>
+            <p className="font-sans text-sm text-warm-white/60 leading-7">{content.visionText}</p>
           </div>
           <div className="space-y-4">
             <p className="font-accent text-sage text-base">Our Mission</p>
-            <h3 className="font-serif text-2xl text-warm-white leading-snug">
-              Connect people, nature, and knowledge
-            </h3>
-            <p className="font-sans text-sm text-warm-white/60 leading-7">
-              Creating and sharing trusted environmental content that promotes forest conservation, biodiversity protection, climate resilience, ecological restoration, and sustainable natural resource management.
-            </p>
+            <h3 className="font-serif text-2xl text-warm-white leading-snug">{content.missionTitle}</h3>
+            <p className="font-sans text-sm text-warm-white/60 leading-7">{content.missionText}</p>
           </div>
           <div className="space-y-4">
             <p className="font-accent text-sage text-base">Our Purpose</p>
-            <h3 className="font-serif text-2xl text-warm-white leading-snug">
-              Make knowledge accessible, practical and impactful
-            </h3>
-            <p className="font-sans text-sm text-warm-white/60 leading-7">
-              We bridge the gap between science, policy, and communities — providing reliable information that empowers people to protect and restore our natural world.
-            </p>
+            <h3 className="font-serif text-2xl text-warm-white leading-snug">{content.purposeTitle}</h3>
+            <p className="font-sans text-sm text-warm-white/60 leading-7">{content.purposeText}</p>
           </div>
         </div>
       </section>
@@ -261,12 +175,9 @@ export default function AboutPage() {
           <div className="text-center mb-14 space-y-3">
             <span className="accent-line">Strategic Objectives</span>
             <h2 className="heading-lg">What We Set Out to Do</h2>
-            <p className="body-text max-w-xl mx-auto">
-              Every piece of content we publish is guided by a clear set of objectives.
-            </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {objectives.map((obj, i) => (
+            {content.objectives.map((obj, i) => (
               <div key={i} className="flex gap-4 p-6 border border-sage/20 rounded-sm hover:border-verdant/30 transition-colors">
                 <div className="w-9 h-9 bg-forest rounded-sm flex items-center justify-center flex-shrink-0">
                   <span className="font-serif text-warm-white text-sm">{i + 1}</span>
@@ -283,9 +194,7 @@ export default function AboutPage() {
         <div className="max-w-3xl mx-auto text-center space-y-4">
           <Target size={28} className="text-warm-white mx-auto" />
           <p className="font-accent text-warm-white/80 text-base">Our Brand Promise</p>
-          <p className="font-serif text-2xl md:text-3xl text-warm-white leading-snug">
-            Committed to delivering credible, evidence-based environmental knowledge that informs decisions, inspires action, and supports sustainable development.
-          </p>
+          <p className="font-serif text-2xl md:text-3xl text-warm-white leading-snug">{content.brandPromise}</p>
         </div>
       </section>
 
@@ -338,7 +247,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <ContactForm />
+      <ContactForm content={content} />
     </div>
   )
 }

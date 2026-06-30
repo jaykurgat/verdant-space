@@ -156,6 +156,13 @@ export default function BlogPublisher({ onPublished, editPost = null }) {
               className="input-field"
               placeholder="https://images.unsplash.com/…"
             />
+            <p className="text-xs font-sans text-light-grey mt-1.5">
+              Paste a direct image link from{' '}
+              <a href="https://unsplash.com" target="_blank" rel="noopener noreferrer" className="text-verdant underline">Unsplash</a>
+              {' '}or{' '}
+              <a href="https://imgur.com/upload" target="_blank" rel="noopener noreferrer" className="text-verdant underline">Imgur</a>.
+              Google Drive links won't display correctly.
+            </p>
           </div>
 
           <div>

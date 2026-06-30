@@ -1,7 +1,6 @@
 import { isSupabaseConfigured } from './supabase'
-import { seedPosts, seedGallery, seedHero } from './seedData'
+import { seedPosts, seedGallery, seedHero, seedSiteContent } from './seedData'
 
-// Lazy supabase accessor — safe regardless of init order
 let _sb = null
 async function sb() {
   if (_sb) return _sb
@@ -10,11 +9,11 @@ async function sb() {
   return _sb
 }
 
-// ── Local Storage Helpers ──────────────────────────────────────────────
 const LS = {
-  posts:   'vs_posts',
-  gallery: 'vs_gallery',
-  hero:    'vs_hero',
+  posts:       'vs_posts',
+  gallery:     'vs_gallery',
+  hero:        'vs_hero',
+  siteContent: 'vs_site_content',
 }
 
 function lsGet(key, fallback) {
@@ -23,12 +22,11 @@ function lsGet(key, fallback) {
     return val ? JSON.parse(val) : fallback
   } catch { return fallback }
 }
-
 function lsSet(key, value) {
   localStorage.setItem(key, JSON.stringify(value))
 }
 
-// ── Hero ──────────────────────────────────────────────────────────────
+// ── Hero (carousel) ─────────────────────────────────────────────────
 export async function getHero() {
   if (isSupabaseConfigured) {
     const { data } = await (await sb()).from('hero').select('*').single()
@@ -44,6 +42,24 @@ export async function updateHero(heroData) {
   }
   lsSet(LS.hero, heroData)
   return heroData
+}
+
+// ── Site Content (About page, Footer, Contact info) ──────────────────
+export async function getSiteContent() {
+  if (isSupabaseConfigured) {
+    const { data } = await (await sb()).from('site_content').select('*').single()
+    return data || seedSiteContent
+  }
+  return lsGet(LS.siteContent, seedSiteContent)
+}
+
+export async function updateSiteContent(content) {
+  if (isSupabaseConfigured) {
+    const { data } = await (await sb()).from('site_content').upsert({ id: 1, ...content }).select().single()
+    return data
+  }
+  lsSet(LS.siteContent, content)
+  return content
 }
 
 // ── Posts ─────────────────────────────────────────────────────────────

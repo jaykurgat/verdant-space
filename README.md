@@ -14,7 +14,8 @@ A modern, full-featured blog and pictorial website for environmental storytellin
 - **Pictorial Gallery** (`/gallery`) — Masonry layout with lightbox and hover overlays
 - **About & Contact** (`/about`) — Origin story, values, contact form
 - **Hidden Admin Panel** (`/vs-admin`) — Secure dashboard for full content management
-  - Hero editor
+  - Hero carousel editor (multiple rotating slides)
+  - Site content editor (About page, Vision/Mission, Objectives, Footer)
   - Blog publisher with live Markdown preview
   - Gallery manager
   - Post dashboard with edit/delete

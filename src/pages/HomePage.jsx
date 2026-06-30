@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { Users, Leaf, BookOpen, ArrowRight, ChevronDown } from 'lucide-react'
+import { Users, Leaf, BookOpen, ArrowRight } from 'lucide-react'
 import BlogCard from '../components/BlogCard'
 import GalleryCard from '../components/GalleryCard'
 import Lightbox from '../components/Lightbox'
 import LoadingSpinner from '../components/LoadingSpinner'
+import HeroCarousel from '../components/HeroCarousel'
 import { useScrollFade } from '../hooks/useScrollFade'
 import { getPosts, getGallery, getHero } from '../lib/dataStore'
 
@@ -196,49 +197,9 @@ export default function HomePage() {
 
   if (loading) return <LoadingSpinner />
 
-  const heroLines = hero.title.split('\n')
-
   return (
     <div>
-      {/* ── HERO ──────────────────────────────────────────── */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        <div
-          className="absolute inset-0 bg-center bg-cover"
-          style={{ backgroundImage: `url(${hero.imageUrl})` }}
-        >
-          <div className="absolute inset-0 bg-forest/70" />
-          <div className="absolute inset-0 bg-gradient-to-b from-forest/50 via-forest/20 to-forest/85" />
-        </div>
-
-        <div className="relative z-10 max-w-4xl mx-auto px-6 text-center space-y-8 pt-20 animate-fade-up">
-          <p className="font-accent text-sage text-lg tracking-wide">
-            Welcome to Verdant Space
-          </p>
-          <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl text-warm-white leading-tight">
-            {heroLines.map((line, i) => (
-              <span key={i} className="block">{line}</span>
-            ))}
-          </h1>
-          <p className="font-sans text-warm-white/75 text-base md:text-lg leading-relaxed max-w-2xl mx-auto">
-            {hero.tagline}
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-            <Link to="/blog" className="btn-primary">
-              Explore the Blog <ArrowRight size={16} />
-            </Link>
-            <Link
-              to="/gallery"
-              className="inline-flex items-center gap-2 border border-warm-white/40 text-warm-white px-6 py-3 rounded-sm font-sans font-medium text-sm tracking-wide hover:bg-warm-white/10 transition-all duration-300"
-            >
-              View Pictorial
-            </Link>
-          </div>
-        </div>
-
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce">
-          <ChevronDown size={24} className="text-warm-white/40" />
-        </div>
-      </section>
+      <HeroCarousel hero={hero} />
 
       <PillarSection />
       <LatestPostsSection posts={posts} />

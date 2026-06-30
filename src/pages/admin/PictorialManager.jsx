@@ -55,6 +55,13 @@ export default function PictorialManager() {
               className="input-field"
               placeholder="https://images.unsplash.com/…"
             />
+            <p className="text-xs font-sans text-light-grey mt-1.5">
+              No file upload yet — paste a direct image link. Free options:{' '}
+              <a href="https://unsplash.com" target="_blank" rel="noopener noreferrer" className="text-verdant underline">Unsplash</a>
+              {' '}(search → right-click photo → "Copy image address") or{' '}
+              <a href="https://imgur.com/upload" target="_blank" rel="noopener noreferrer" className="text-verdant underline">Imgur</a>
+              {' '}(upload your own photo, copy the direct link). Google Drive links won't work.
+            </p>
           </div>
           <div>
             <label className="block font-sans text-xs font-medium text-charcoal mb-2 uppercase tracking-wider">

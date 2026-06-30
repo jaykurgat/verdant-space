@@ -6,19 +6,38 @@
 -- Enable Row Level Security
 -- First, create tables
 
--- Hero table
+-- Hero table (now stores carousel slides as JSON)
 CREATE TABLE IF NOT EXISTS hero (
   id BIGINT PRIMARY KEY DEFAULT 1,
-  title TEXT NOT NULL DEFAULT 'Connecting People,\nNature & Knowledge',
-  tagline TEXT NOT NULL DEFAULT 'A living archive of environmental thought, ecological storytelling, and the quiet intelligence of the natural world.',
-  image_url TEXT NOT NULL DEFAULT 'https://images.unsplash.com/photo-1448375240586-882707db888b?w=1920&q=80',
+  slides JSONB NOT NULL DEFAULT '[]',
+  autoplay BOOLEAN DEFAULT true,
+  interval_seconds INT DEFAULT 6,
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Insert default hero row
-INSERT INTO hero (id, title, tagline, image_url)
-VALUES (1, 'Connecting People,\nNature & Knowledge', 'A living archive of environmental thought, ecological storytelling, and the quiet intelligence of the natural world.', 'https://images.unsplash.com/photo-1448375240586-882707db888b?w=1920&q=80')
-ON CONFLICT (id) DO NOTHING;
+-- Site Content table (About page, Footer, Contact — all editable text)
+CREATE TABLE IF NOT EXISTS site_content (
+  id BIGINT PRIMARY KEY DEFAULT 1,
+  about_intro TEXT,
+  origin_story_title TEXT,
+  origin_story TEXT,
+  origin_story_image_url TEXT,
+  origin_story_quote TEXT,
+  vision_title TEXT,
+  vision_text TEXT,
+  mission_title TEXT,
+  mission_text TEXT,
+  purpose_title TEXT,
+  purpose_text TEXT,
+  brand_promise TEXT,
+  objectives JSONB DEFAULT '[]',
+  contact_intro TEXT,
+  contact_email TEXT,
+  contact_location TEXT,
+  footer_tagline TEXT,
+  footer_quote TEXT,
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
 
 -- Posts table
 CREATE TABLE IF NOT EXISTS posts (
@@ -49,16 +68,21 @@ CREATE TABLE IF NOT EXISTS gallery (
 -- ── Row Level Security ──────────────────────────────────────────────
 
 ALTER TABLE hero ENABLE ROW LEVEL SECURITY;
+ALTER TABLE site_content ENABLE ROW LEVEL SECURITY;
 ALTER TABLE posts ENABLE ROW LEVEL SECURITY;
 ALTER TABLE gallery ENABLE ROW LEVEL SECURITY;
 
 -- Public read access
 CREATE POLICY "Public can read hero" ON hero FOR SELECT USING (true);
+CREATE POLICY "Public can read site_content" ON site_content FOR SELECT USING (true);
 CREATE POLICY "Public can read published posts" ON posts FOR SELECT USING (published = true);
 CREATE POLICY "Public can read gallery" ON gallery FOR SELECT USING (true);
 
 -- Authenticated write access (for admin)
 CREATE POLICY "Auth can update hero" ON hero FOR UPDATE USING (auth.role() = 'authenticated');
+CREATE POLICY "Auth can insert hero" ON hero FOR INSERT WITH CHECK (auth.role() = 'authenticated');
+CREATE POLICY "Auth can update site_content" ON site_content FOR UPDATE USING (auth.role() = 'authenticated');
+CREATE POLICY "Auth can insert site_content" ON site_content FOR INSERT WITH CHECK (auth.role() = 'authenticated');
 CREATE POLICY "Auth can insert posts" ON posts FOR INSERT WITH CHECK (auth.role() = 'authenticated');
 CREATE POLICY "Auth can update posts" ON posts FOR UPDATE USING (auth.role() = 'authenticated');
 CREATE POLICY "Auth can delete posts" ON posts FOR DELETE USING (auth.role() = 'authenticated');

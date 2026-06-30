@@ -1,18 +1,20 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { LayoutDashboard, FileText, Image, Settings, LogOut, Menu, X, ExternalLink } from 'lucide-react'
+import { LayoutDashboard, FileText, Image, Settings, FileEdit, LogOut, Menu, X, ExternalLink } from 'lucide-react'
 import { useAuth } from '../../contexts/AuthContext'
 import AdminLogin from './AdminLogin'
 import Dashboard from './Dashboard'
 import HeroEditor from './HeroEditor'
 import BlogPublisher from './BlogPublisher'
 import PictorialManager from './PictorialManager'
+import SiteContentEditor from './SiteContentEditor'
 
 const tabs = [
   { id: 'dashboard', label: 'Dashboard',       icon: LayoutDashboard },
-  { id: 'hero',      label: 'Hero Editor',      icon: Settings        },
-  { id: 'publish',   label: 'Publish Article',  icon: FileText        },
-  { id: 'gallery',   label: 'Pictorial',        icon: Image           },
+  { id: 'hero',      label: 'Hero Carousel',   icon: Settings        },
+  { id: 'content',   label: 'Site Content',    icon: FileEdit        },
+  { id: 'publish',   label: 'Publish Article', icon: FileText        },
+  { id: 'gallery',   label: 'Pictorial',       icon: Image           },
 ]
 
 export default function AdminPanel() {
@@ -52,6 +54,7 @@ export default function AdminPanel() {
     switch (activeTab) {
       case 'dashboard': return <Dashboard onEditPost={handleEditPost} onTabChange={navigate} />
       case 'hero':      return <HeroEditor />
+      case 'content':   return <SiteContentEditor />
       case 'publish':   return <BlogPublisher onPublished={handlePublished} editPost={editPost} />
       case 'gallery':   return <PictorialManager />
       default:          return null
