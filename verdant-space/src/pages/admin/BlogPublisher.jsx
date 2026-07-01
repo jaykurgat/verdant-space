@@ -1,52 +1,42 @@
 import { useState, useEffect } from 'react'
 import { Save, Check, Eye, EyeOff } from 'lucide-react'
 import { createPost, updatePost } from '../../lib/dataStore'
-import { CATEGORIES, getSubcategories } from '../../lib/categories'
+import { seedCategories } from '../../lib/seedData'
 import { renderMarkdown } from '../../utils/markdown'
 
 const EMPTY = {
   title: '',
   subtitle: '',
   category: '',
-  subCategory: '',
   body: '',
   imageUrl: '',
   author: 'Verdant Space',
 }
 
 export default function BlogPublisher({ onPublished, editPost = null }) {
-  const [form, setForm]       = useState(EMPTY)
+  const [form, setForm] = useState(EMPTY)
   const [preview, setPreview] = useState(false)
-  const [saving, setSaving]   = useState(false)
-  const [saved, setSaved]     = useState(false)
-  const [error, setError]     = useState('')
+  const [saving, setSaving] = useState(false)
+  const [saved, setSaved] = useState(false)
+  const [error, setError] = useState('')
 
+  // Populate form when editing an existing post
   useEffect(() => {
     if (editPost) {
       setForm({
-        title:       editPost.title       || '',
-        subtitle:    editPost.subtitle    || '',
-        category:    editPost.category    || '',
-        subCategory: editPost.subCategory || '',
-        body:        editPost.body        || '',
-        imageUrl:    editPost.imageUrl    || '',
-        author:      editPost.author      || 'Verdant Space',
+        title:    editPost.title    || '',
+        subtitle: editPost.subtitle || '',
+        category: editPost.category || '',
+        body:     editPost.body     || '',
+        imageUrl: editPost.imageUrl || '',
+        author:   editPost.author   || 'Verdant Space',
       })
     } else {
       setForm(EMPTY)
     }
   }, [editPost])
 
-  const update = (field, value) => {
-    setForm((f) => {
-      const updated = { ...f, [field]: value }
-      // Reset subCategory when category changes
-      if (field === 'category') updated.subCategory = ''
-      return updated
-    })
-  }
-
-  const subcategories = getSubcategories(form.category)
+  const update = (field, value) => setForm((f) => ({ ...f, [field]: value }))
 
   const handleSave = async () => {
     if (!form.title || !form.body || !form.category) {
@@ -93,35 +83,33 @@ export default function BlogPublisher({ onPublished, editPost = null }) {
           {form.imageUrl && (
             <img src={form.imageUrl} alt="Preview" className="w-full h-52 object-cover rounded-sm" />
           )}
-          <div className="flex items-center gap-2 flex-wrap">
-            {form.category && <span className="tag">{form.category}</span>}
-            {form.subCategory && (
-              <span className="tag bg-verdant/10 text-verdant">{form.subCategory}</span>
-            )}
-          </div>
+          {form.category && <span className="tag">{form.category}</span>}
           <h1 className="font-serif text-3xl text-forest">{form.title || 'Untitled'}</h1>
-          {form.subtitle && <p className="font-serif text-lg text-charcoal/60 italic">{form.subtitle}</p>}
+          {form.subtitle && (
+            <p className="font-serif text-lg text-charcoal/60 italic">{form.subtitle}</p>
+          )}
           <div className="border-t border-sage/20 pt-6">
-            <article className="article-body" dangerouslySetInnerHTML={{ __html: renderMarkdown(form.body || '_No content yet._') }} />
+            <article
+              className="article-body"
+              dangerouslySetInnerHTML={{ __html: renderMarkdown(form.body || '_No content yet._') }}
+            />
           </div>
         </div>
       ) : (
         <div className="space-y-5">
-          <div>
-            <label className="block font-sans text-xs font-medium text-charcoal mb-2 uppercase tracking-wider">
-              Title *
-            </label>
-            <input
-              type="text"
-              value={form.title}
-              onChange={(e) => update('title', e.target.value)}
-              className="input-field"
-              placeholder="Article title…"
-            />
-          </div>
-
-          {/* Two-level category selector */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div>
+              <label className="block font-sans text-xs font-medium text-charcoal mb-2 uppercase tracking-wider">
+                Title *
+              </label>
+              <input
+                type="text"
+                value={form.title}
+                onChange={(e) => update('title', e.target.value)}
+                className="input-field"
+                placeholder="Article title…"
+              />
+            </div>
             <div>
               <label className="block font-sans text-xs font-medium text-charcoal mb-2 uppercase tracking-wider">
                 Category *
@@ -132,26 +120,8 @@ export default function BlogPublisher({ onPublished, editPost = null }) {
                 className="select-field"
               >
                 <option value="">Select category…</option>
-                {CATEGORIES.map((c) => (
-                  <option key={c.id} value={c.label}>{c.label}</option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <label className="block font-sans text-xs font-medium text-charcoal mb-2 uppercase tracking-wider">
-                Sub-category {subcategories.length > 0 ? '' : '(none for this category)'}
-              </label>
-              <select
-                value={form.subCategory}
-                onChange={(e) => update('subCategory', e.target.value)}
-                className="select-field"
-                disabled={subcategories.length === 0}
-              >
-                <option value="">
-                  {subcategories.length > 0 ? 'Select sub-category…' : 'No sub-categories'}
-                </option>
-                {subcategories.map((s) => (
-                  <option key={s} value={s}>{s}</option>
+                {seedCategories.map((c) => (
+                  <option key={c} value={c}>{c}</option>
                 ))}
               </select>
             </div>
@@ -186,13 +156,6 @@ export default function BlogPublisher({ onPublished, editPost = null }) {
               className="input-field"
               placeholder="https://images.unsplash.com/…"
             />
-            <p className="text-xs font-sans text-light-grey mt-1.5">
-              Paste a direct image link from{' '}
-              <a href="https://unsplash.com" target="_blank" rel="noopener noreferrer" className="text-verdant underline">Unsplash</a>
-              {' '}or{' '}
-              <a href="https://imgur.com/upload" target="_blank" rel="noopener noreferrer" className="text-verdant underline">Imgur</a>.
-              Google Drive links won't display correctly.
-            </p>
           </div>
 
           <div>
@@ -233,12 +196,18 @@ export default function BlogPublisher({ onPublished, editPost = null }) {
 
       <div className="flex items-center gap-3">
         <button onClick={handleSave} disabled={saving} className="btn-primary">
-          {saved ? (<><Check size={14} /> {isEdit ? 'Updated!' : 'Published!'}</>) :
-           saving ? (isEdit ? 'Updating…' : 'Publishing…') :
-           (<><Save size={14} /> {isEdit ? 'Save Changes' : 'Publish Article'}</>)}
+          {saved ? (
+            <><Check size={14} /> {isEdit ? 'Updated!' : 'Published!'}</>
+          ) : saving ? (
+            isEdit ? 'Updating…' : 'Publishing…'
+          ) : (
+            <><Save size={14} /> {isEdit ? 'Save Changes' : 'Publish Article'}</>
+          )}
         </button>
         {isEdit && (
-          <button onClick={() => onPublished?.()} className="btn-outline text-xs">Cancel</button>
+          <button onClick={() => onPublished?.()} className="btn-outline text-xs">
+            Cancel
+          </button>
         )}
       </div>
     </div>

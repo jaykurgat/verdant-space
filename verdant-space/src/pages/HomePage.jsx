@@ -1,0 +1,225 @@
+import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
+import { Users, Leaf, BookOpen, ArrowRight, ChevronDown } from 'lucide-react'
+import BlogCard from '../components/BlogCard'
+import GalleryCard from '../components/GalleryCard'
+import Lightbox from '../components/Lightbox'
+import LoadingSpinner from '../components/LoadingSpinner'
+import { useScrollFade } from '../hooks/useScrollFade'
+import { getPosts, getGallery, getHero } from '../lib/dataStore'
+
+const pillars = [
+  {
+    icon: Users,
+    title: 'People',
+    description: 'The communities who live closest to nature—pastoralists, farmers, forest guardians—hold irreplaceable knowledge about the land and its rhythms.',
+    accent: 'Community & Stewardship',
+  },
+  {
+    icon: Leaf,
+    title: 'Nature',
+    description: 'From mycorrhizal networks to monsoon patterns, the natural world operates with a complexity and intelligence that science is only beginning to articulate.',
+    accent: 'Ecology & Earth Systems',
+  },
+  {
+    icon: BookOpen,
+    title: 'Knowledge',
+    description: 'Bridging indigenous wisdom with contemporary science, building a shared language for the environmental challenges of our time.',
+    accent: 'Research & Storytelling',
+  },
+]
+
+function PillarSection() {
+  const ref = useScrollFade()
+  return (
+    <section ref={ref} className="py-24 px-6 bg-warm-white">
+      <div className="max-w-6xl mx-auto">
+        <div className="text-center mb-16 space-y-3">
+          <span className="accent-line">What We Stand For</span>
+          <h2 className="heading-lg">Three Pillars of Understanding</h2>
+          <p className="body-text max-w-xl mx-auto">
+            Verdant Space lives at the intersection of community, ecology, and knowledge — where the most important environmental conversations are happening.
+          </p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {pillars.map((pillar) => (
+            <div
+              key={pillar.title}
+              className="group p-8 border border-sage/30 rounded-sm hover:border-verdant/50 hover:bg-sage/5 transition-all duration-300 space-y-4"
+            >
+              <div className="w-12 h-12 bg-sage/20 rounded-sm flex items-center justify-center group-hover:bg-verdant/20 transition-colors duration-300">
+                <pillar.icon size={22} className="text-verdant" />
+              </div>
+              <div>
+                <p className="font-accent text-sage text-sm mb-1">{pillar.accent}</p>
+                <h3 className="heading-sm mb-3">{pillar.title}</h3>
+                <p className="body-text text-sm leading-7">{pillar.description}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function LatestPostsSection({ posts }) {
+  const ref = useScrollFade()
+  return (
+    <section ref={ref} className="py-24 px-6 bg-sage/10">
+      <div className="max-w-6xl mx-auto">
+        <div className="flex flex-col md:flex-row items-start md:items-end justify-between mb-12 gap-4">
+          <div className="space-y-2">
+            <span className="accent-line">Recently Published</span>
+            <h2 className="heading-lg">Latest from the Field</h2>
+          </div>
+          <Link to="/blog" className="btn-outline text-xs">
+            View all articles <ArrowRight size={14} />
+          </Link>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {posts.slice(0, 3).map((post) => (
+            <BlogCard key={post.id} post={post} />
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function GalleryPreviewSection({ images }) {
+  const ref = useScrollFade()
+  const [lightboxIndex, setLightboxIndex] = useState(null)
+  const preview = images.slice(0, 6)
+
+  return (
+    <section ref={ref} className="py-24 px-6 bg-warm-white">
+      <div className="max-w-6xl mx-auto">
+        <div className="flex flex-col md:flex-row items-start md:items-end justify-between mb-12 gap-4">
+          <div className="space-y-2">
+            <span className="accent-line">Environmental Photography</span>
+            <h2 className="heading-lg">The World in Frame</h2>
+          </div>
+          <Link to="/gallery" className="btn-outline text-xs">
+            Full gallery <ArrowRight size={14} />
+          </Link>
+        </div>
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+          {preview.map((image, i) => (
+            <div
+              key={image.id}
+              className={i === 0 ? 'col-span-2 md:col-span-1' : ''}
+            >
+              <GalleryCard
+                image={image}
+                onClick={() => setLightboxIndex(i)}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {lightboxIndex !== null && (
+        <Lightbox
+          images={preview}
+          currentIndex={lightboxIndex}
+          onClose={() => setLightboxIndex(null)}
+          onPrev={() => setLightboxIndex((i) => (i - 1 + preview.length) % preview.length)}
+          onNext={() => setLightboxIndex((i) => (i + 1) % preview.length)}
+        />
+      )}
+    </section>
+  )
+}
+
+function QuoteSection() {
+  const ref = useScrollFade()
+  return (
+    <section ref={ref} className="py-24 px-6 bg-forest">
+      <div className="max-w-3xl mx-auto text-center space-y-6">
+        <span className="font-accent text-sage text-xl">"</span>
+        <p className="font-serif text-3xl md:text-4xl text-warm-white leading-relaxed italic">
+          The Earth does not belong to us. We belong to the Earth.
+        </p>
+        <div className="w-12 h-px bg-sage mx-auto" />
+        <p className="font-sans text-sm text-warm-white/50">
+          A guiding principle at Verdant Space
+        </p>
+      </div>
+    </section>
+  )
+}
+
+export default function HomePage() {
+  const [hero, setHero] = useState(null)
+  const [posts, setPosts] = useState([])
+  const [gallery, setGallery] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    Promise.all([getHero(), getPosts(), getGallery()]).then(([h, p, g]) => {
+      setHero(h)
+      setPosts(p)
+      setGallery(g)
+      setLoading(false)
+    })
+  }, [])
+
+  if (loading) return <LoadingSpinner />
+
+  const heroLines = hero.title.split('\n')
+
+  return (
+    <div>
+      {/* HERO */}
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+        {/* Background */}
+        <div
+          className="absolute inset-0 bg-center bg-cover"
+          style={{ backgroundImage: `url(${hero.imageUrl})` }}
+        >
+          <div className="absolute inset-0 bg-forest/65" />
+          <div className="absolute inset-0 bg-gradient-to-b from-forest/30 via-transparent to-forest/80" />
+        </div>
+
+        {/* Content */}
+        <div className="relative z-10 max-w-4xl mx-auto px-6 text-center space-y-8 pt-20 animate-fade-up">
+          <p className="font-accent text-sage text-lg tracking-wide">
+            Welcome to Verdant Space
+          </p>
+          <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl text-warm-white leading-tight">
+            {heroLines.map((line, i) => (
+              <span key={i} className="block">
+                {line}
+              </span>
+            ))}
+          </h1>
+          <p className="font-sans text-warm-white/75 text-base md:text-lg leading-relaxed max-w-2xl mx-auto">
+            {hero.tagline}
+          </p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+            <Link to="/blog" className="btn-primary">
+              Explore the Blog <ArrowRight size={16} />
+            </Link>
+            <Link
+              to="/gallery"
+              className="inline-flex items-center gap-2 border border-warm-white/40 text-warm-white px-6 py-3 rounded-sm font-sans font-medium text-sm tracking-wide hover:bg-warm-white/10 transition-all duration-300"
+            >
+              View Pictorial
+            </Link>
+          </div>
+        </div>
+
+        {/* Scroll indicator */}
+        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce">
+          <ChevronDown size={24} className="text-warm-white/40" />
+        </div>
+      </section>
+
+      <PillarSection />
+      <LatestPostsSection posts={posts} />
+      <QuoteSection />
+      <GalleryPreviewSection images={gallery} />
+    </div>
+  )
+}

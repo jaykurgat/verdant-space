@@ -65,15 +65,7 @@ export default function BlogArticlePage() {
 
         {/* Meta */}
         <div className="space-y-4 mb-10">
-          <div className="flex items-center gap-1.5 flex-wrap">
-            <span className="tag">{post.category}</span>
-            {post.subCategory && (
-              <>
-                <span className="text-light-grey text-xs">›</span>
-                <span className="tag bg-verdant/10 text-verdant">{post.subCategory}</span>
-              </>
-            )}
-          </div>
+          <span className="tag">{post.category}</span>
           <h1 className="font-serif text-4xl md:text-5xl text-forest leading-tight">
             {post.title}
           </h1>
@@ -126,7 +118,7 @@ export default function BlogArticlePage() {
         {/* Related */}
         {relatedPosts.length > 0 && (
           <div className="mt-16 space-y-6">
-            <h3 className="heading-sm">More in {post.subCategory || post.category}</h3>
+            <h3 className="heading-sm">More in {post.category}</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               {relatedPosts.map((rp) => (
                 <Link

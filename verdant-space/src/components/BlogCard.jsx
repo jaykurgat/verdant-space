@@ -19,7 +19,7 @@ export default function BlogCard({ post, featured = false }) {
           />
         </div>
         <div className="p-8 flex flex-col justify-center space-y-4">
-          <div className="flex items-center gap-1.5 flex-wrap"><span className="tag">{post.category}</span>{post.subCategory && (<><span className="text-light-grey text-xs">›</span><span className="tag bg-verdant/10 text-verdant">{post.subCategory}</span></>)}</div>
+          <span className="tag">{post.category}</span>
           <h3 className="font-serif text-2xl text-forest leading-snug group-hover:text-verdant transition-colors">
             {post.title}
           </h3>
@@ -52,7 +52,7 @@ export default function BlogCard({ post, featured = false }) {
         />
       </div>
       <div className="p-6 flex flex-col flex-1 space-y-3">
-        <div className="flex items-center gap-1.5 flex-wrap"><span className="tag">{post.category}</span>{post.subCategory && (<><span className="text-light-grey text-xs">›</span><span className="tag bg-verdant/10 text-verdant">{post.subCategory}</span></>)}</div>
+        <span className="tag">{post.category}</span>
         <h3 className="font-serif text-xl text-forest leading-snug group-hover:text-verdant transition-colors line-clamp-2">
           {post.title}
         </h3>

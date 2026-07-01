@@ -68,24 +68,15 @@ I started Verdant Space to bridge that gap. Whether someone is a student beginni
   footerQuote: 'Connecting People, Nature and Knowledge',
 }
 
-export const seedCategories = [
-  'Forestry and Forest Conservation',
-  'Climate Change and Adaptation',
-  'Ecological Restoration',
-  'Environmental Policy and Governance',
-  'Community-Based Conservation',
-  'Nature-Based Solutions',
-  'Green Innovation and Technology',
-  'Environmental Research',
-  'Environmental Education',
-]
+// Categories are now managed in src/lib/categories.js
 
 export const seedPosts = [
   {
     id: '1',
     title: 'The Silent Language of Old-Growth Forests',
     subtitle: 'How mycorrhizal networks carry memory, signal, and solidarity beneath our feet',
-    category: 'Forestry and Forest Conservation',
+    category: 'Forestry',
+    subCategory: 'Protection and Ecology',
     body: `## The Underground Internet
 
 There is a world beneath our feet that most of us will never see — a vast, ancient network of fungal threads called mycorrhizae that connects the roots of trees in what scientists have begun calling the "Wood Wide Web."
@@ -116,7 +107,8 @@ The forest is teaching us something. The question is whether we are willing to l
     id: '2',
     title: 'Rewilding the Riverbanks of the Rift Valley',
     subtitle: 'A field report from Kenya\'s Tana River — where restoration meets community',
-    category: 'Ecological Restoration',
+    category: 'Restoration',
+    subCategory: 'Rehabilitation',
     body: `## Where the River Remembers
 
 The Tana River in Kenya is one of East Africa's most important waterways. It rises in the Aberdare Range, cuts through the country for nearly 1000 kilometres, and empties into the Indian Ocean near Garsen. For thousands of years, its seasonal floods deposited rich sediment along its banks, creating one of the most biodiverse corridors on the continent.
@@ -149,7 +141,8 @@ Restoration is not just an ecological project. It is a relational one — built 
     id: '3',
     title: 'Beyond Carbon: Understanding What Forests Really Give Us',
     subtitle: 'Why reducing forests to carbon stocks misses most of the story',
-    category: 'Environmental Policy and Governance',
+    category: 'Environmental Policies and Governance',
+    subCategory: 'Structures, Institutions, and Processes',
     body: `## The Carbon Framing
 
 In recent years, forests have increasingly been discussed in the language of carbon — sequestration rates, carbon credits, offset markets. This framing has brought new funding to conservation and elevated forests in climate policy discussions.
@@ -184,7 +177,8 @@ This requires moving beyond single-metric frameworks and toward integrated appro
     id: '4',
     title: 'Mangrove Restoration in East Africa: Lessons from the Coast',
     subtitle: 'How coastal communities are leading the recovery of one of Africa\'s most vital ecosystems',
-    category: 'Community-Based Conservation',
+    category: 'Restoration',
+    subCategory: 'Community-Based Conservation',
     body: `## The Trees That Breathe Salt
 
 Mangroves are among the most extraordinary trees on Earth. They grow where other trees cannot — in the brackish water between land and sea, in tidal zones where salt concentration shifts daily.
@@ -219,7 +213,8 @@ The mangroves are resilient. Given the right conditions and community support, t
     id: '5',
     title: 'Indigenous Knowledge and Forest Management in Africa',
     subtitle: 'What generations of lived experience can teach modern conservation science',
-    category: 'Environmental Education',
+    category: 'Think Pieces',
+    subCategory: '',
     body: `## A Different Kind of Knowledge
 
 Across Africa, communities have managed forests, water sources, and wildlife for generations using knowledge systems developed through centuries of observation, practice, and adaptive learning.
@@ -252,7 +247,8 @@ Integrating indigenous knowledge with contemporary science is not a matter of ch
     id: '6',
     title: 'Climate Adaptation in African Drylands: Nature-Based Solutions',
     subtitle: 'How communities across the Sahel are working with nature to build resilience',
-    category: 'Nature-Based Solutions',
+    category: 'Restoration',
+    subCategory: 'Nature-Based Solutions',
     body: `## The Greening Sahel
 
 Across the Sahel region of Africa, one of the most remarkable environmental recoveries of the past century has been unfolding largely without fanfare. Millions of hectares of degraded dryland have been restored through a practice known as farmer-managed natural regeneration (FMNR).
@@ -287,83 +283,95 @@ export const seedGallery = [
     imageUrl: 'https://images.unsplash.com/photo-1448375240586-882707db888b?w=800&q=80',
     caption: 'Ancient Forest Canopy',
     location: 'Aberdare Range, Kenya',
-    category: 'Forestry and Forest Conservation',
+    category: 'Forestry',
+    subCategory: 'Protection and Ecology',
   },
   {
     id: 'g2',
     imageUrl: 'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=600&q=80',
     caption: 'Dawn on the Savanna',
     location: 'Maasai Mara, Kenya',
-    category: 'Community-Based Conservation',
+    category: 'Restoration',
+    subCategory: 'Community-Based Conservation',
   },
   {
     id: 'g3',
     imageUrl: 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=900&q=80',
     caption: 'Retreating Glacier',
     location: 'Mount Kenya',
-    category: 'Climate Change and Adaptation',
+    category: 'Climate Change',
+    subCategory: 'Adaptation',
   },
   {
     id: 'g4',
     imageUrl: 'https://images.unsplash.com/photo-1497436072909-60f360e1d4b1?w=700&q=80',
     caption: 'Highland Forest at First Light',
     location: 'Mau Forest Complex, Kenya',
-    category: 'Forestry and Forest Conservation',
+    category: 'Forestry',
+    subCategory: 'Protection and Ecology',
   },
   {
     id: 'g5',
     imageUrl: 'https://images.unsplash.com/photo-1518020382113-a7e8fc38eac9?w=800&q=80',
     caption: 'Mangrove Aerial Roots',
     location: 'Gazi Bay, Kenya',
-    category: 'Ecological Restoration',
+    category: 'Restoration',
+    subCategory: 'Rehabilitation',
   },
   {
     id: 'g6',
     imageUrl: 'https://images.unsplash.com/photo-1474511320723-9a56873867b5?w=600&q=80',
     caption: 'Wildlife Corridor',
     location: 'Tsavo, Kenya',
-    category: 'Community-Based Conservation',
+    category: 'Restoration',
+    subCategory: 'Community-Based Conservation',
   },
   {
     id: 'g7',
     imageUrl: 'https://images.unsplash.com/photo-1519331379826-f10be5486c6f?w=900&q=80',
     caption: 'Wildflower Meadow',
     location: 'Mount Elgon, Uganda',
-    category: 'Ecological Restoration',
+    category: 'Restoration',
+    subCategory: 'Rehabilitation',
   },
   {
     id: 'g8',
     imageUrl: 'https://images.unsplash.com/photo-1501854140801-50d01698950b?w=750&q=80',
     caption: 'Aerial — River Delta',
     location: 'Tana River, Kenya',
-    category: 'Nature-Based Solutions',
+    category: 'Restoration',
+    subCategory: 'Nature-Based Solutions',
   },
   {
     id: 'g9',
     imageUrl: 'https://images.unsplash.com/photo-1433086966358-54859d0ed716?w=800&q=80',
     caption: 'Waterfall, Rainforest',
     location: 'Kakamega Forest, Kenya',
-    category: 'Forestry and Forest Conservation',
+    category: 'Forestry',
+    subCategory: 'Protection and Ecology',
   },
   {
     id: 'g10',
     imageUrl: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=700&q=80',
     caption: 'Mountain Summit at Sunrise',
     location: 'Rwenzori Mountains, Uganda',
-    category: 'Climate Change and Adaptation',
+    category: 'Climate Change',
+    subCategory: 'Adaptation',
   },
   {
     id: 'g11',
     imageUrl: 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=850&q=80',
     caption: 'Community Seed Nursery',
     location: 'Rift Valley, Kenya',
-    category: 'Community-Based Conservation',
+    category: 'Restoration',
+    subCategory: 'Community-Based Conservation',
   },
   {
     id: 'g12',
     imageUrl: 'https://images.unsplash.com/photo-1421789665209-c9b2a435e3dc?w=700&q=80',
     caption: 'Old Growth Canopy',
     location: 'Arabuko-Sokoke Forest, Kenya',
-    category: 'Forestry and Forest Conservation',
+    category: 'Forestry',
+    subCategory: 'Protection and Ecology',
   },
 ]

@@ -1,0 +1,183 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-warm-white text-charcoal font-sans;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    @apply bg-sage text-charcoal;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-warm-white;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-sage rounded-full;
+  }
+}
+
+@layer components {
+  .section-fade {
+    @apply opacity-0;
+    transition: opacity 0.7s ease, transform 0.7s ease;
+    transform: translateY(28px);
+  }
+
+  .section-fade.visible {
+    @apply opacity-100;
+    transform: translateY(0);
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center gap-2 bg-forest text-warm-white px-6 py-3 rounded-sm font-sans font-medium text-sm tracking-wide hover:bg-verdant transition-all duration-300;
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center gap-2 border border-forest text-forest px-6 py-3 rounded-sm font-sans font-medium text-sm tracking-wide hover:bg-forest hover:text-warm-white transition-all duration-300;
+  }
+
+  .tag {
+    @apply inline-block bg-sage/20 text-verdant text-xs font-sans font-medium px-3 py-1 rounded-sm tracking-wider uppercase;
+  }
+
+  .heading-xl {
+    @apply font-serif text-4xl md:text-5xl lg:text-6xl leading-tight text-forest;
+  }
+
+  .heading-lg {
+    @apply font-serif text-3xl md:text-4xl leading-tight text-forest;
+  }
+
+  .heading-md {
+    @apply font-serif text-2xl md:text-3xl leading-snug text-forest;
+  }
+
+  .heading-sm {
+    @apply font-serif text-xl md:text-2xl leading-snug text-forest;
+  }
+
+  .body-text {
+    @apply font-sans text-base leading-relaxed text-charcoal/80;
+  }
+
+  .accent-line {
+    @apply font-accent text-verdant text-lg;
+  }
+
+  .card-hover {
+    @apply transition-all duration-500 hover:shadow-lg hover:-translate-y-1;
+  }
+
+  .glass-nav {
+    @apply bg-warm-white/80 backdrop-blur-md border-b border-sage/20;
+  }
+
+  .input-field {
+    @apply w-full px-4 py-3 border border-sage/40 rounded-sm font-sans text-sm text-charcoal bg-warm-white focus:outline-none focus:border-verdant focus:ring-1 focus:ring-verdant/30 transition-all duration-200 placeholder:text-light-grey;
+  }
+
+  .textarea-field {
+    @apply w-full px-4 py-3 border border-sage/40 rounded-sm font-sans text-sm text-charcoal bg-warm-white focus:outline-none focus:border-verdant focus:ring-1 focus:ring-verdant/30 transition-all duration-200 placeholder:text-light-grey resize-y;
+  }
+
+  .select-field {
+    @apply w-full px-4 py-3 border border-sage/40 rounded-sm font-sans text-sm text-charcoal bg-warm-white focus:outline-none focus:border-verdant focus:ring-1 focus:ring-verdant/30 transition-all duration-200 appearance-none cursor-pointer;
+  }
+
+  /* Masonry grid for gallery */
+  .masonry-grid {
+    column-count: 1;
+    column-gap: 16px;
+  }
+
+  @media (min-width: 640px) {
+    .masonry-grid {
+      column-count: 2;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .masonry-grid {
+      column-count: 3;
+    }
+  }
+
+  .masonry-item {
+    break-inside: avoid;
+    margin-bottom: 16px;
+  }
+
+  /* Blog article typography */
+  .article-body h1,
+  .article-body h2,
+  .article-body h3 {
+    @apply font-serif text-forest mt-8 mb-4;
+  }
+
+  .article-body h1 {
+    @apply text-3xl;
+  }
+
+  .article-body h2 {
+    @apply text-2xl;
+  }
+
+  .article-body h3 {
+    @apply text-xl;
+  }
+
+  .article-body p {
+    @apply body-text mb-5 leading-8;
+  }
+
+  .article-body blockquote {
+    @apply border-l-4 border-sage pl-6 my-8 font-serif text-xl italic text-forest;
+  }
+
+  .article-body ul,
+  .article-body ol {
+    @apply ml-6 mb-5 space-y-2;
+  }
+
+  .article-body ul li {
+    @apply body-text list-disc;
+  }
+
+  .article-body ol li {
+    @apply body-text list-decimal;
+  }
+
+  .article-body strong {
+    @apply font-semibold text-charcoal;
+  }
+
+  .article-body em {
+    @apply italic;
+  }
+
+  .article-body a {
+    @apply text-verdant underline decoration-sage hover:text-forest transition-colors;
+  }
+
+  .article-body img {
+    @apply w-full rounded-sm my-8 shadow-md;
+  }
+}
